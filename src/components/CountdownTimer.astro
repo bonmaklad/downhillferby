@@ -1,0 +1,77 @@
+---
+export interface CountdownProps {
+	target: string;
+}
+
+const { target } = Astro.props as CountdownProps;
+
+const targetDate = new Date(target);
+const now = new Date();
+const diff = Math.max(0, targetDate.getTime() - now.getTime());
+const rawDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+const rawHours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+const rawMinutes = Math.floor((diff / (1000 * 60)) % 60);
+const rawSeconds = Math.floor((diff / 1000) % 60);
+
+// Pad for initial SSR so the UI doesn't jump on first tick
+const pad = (value: number) => String(value).padStart(2, '0');
+const days = String(rawDays);
+const hours = pad(rawHours);
+const minutes = pad(rawMinutes);
+const seconds = pad(rawSeconds);
+
+const id = `countdown-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div
+	id={id}
+	data-countdown-target={target}
+	class="grid w-full grid-cols-2 gap-4 rounded-3xl border border-white/50 bg-white/10 p-6 text-white backdrop-blur lg:grid-cols-4"
+>
+	<div class="flex min-w-0 flex-col items-center justify-center rounded-2xl bg-black/40 p-4 text-center shadow-inner overflow-hidden">
+		<p class="text-[0.55rem] sm:text-[0.65rem] md:text-[0.75rem] uppercase tracking-[0.08em] text-white/60">Days</p>
+		<p class="tabular-nums font-display leading-none tracking-[0.02em] text-[clamp(1.75rem,7vw,3rem)] md:text-[clamp(2rem,4vw,3.25rem)]" data-unit="Days">{days}</p>
+	</div>
+	<div class="flex min-w-0 flex-col items-center justify-center rounded-2xl bg-black/40 p-4 text-center shadow-inner overflow-hidden">
+		<p class="text-[0.55rem] sm:text-[0.65rem] md:text-[0.75rem] uppercase tracking-[0.08em] text-white/60">Hours</p>
+		<p class="tabular-nums font-display leading-none tracking-[0.02em] text-[clamp(1.75rem,7vw,3rem)] md:text-[clamp(2rem,4vw,3.25rem)]" data-unit="Hours">{hours}</p>
+	</div>
+	<div class="flex min-w-0 flex-col items-center justify-center rounded-2xl bg-black/40 p-4 text-center shadow-inner overflow-hidden">
+		<p class="text-[0.52rem] sm:text-[0.62rem] md:text-[0.72rem] uppercase tracking-[0.08em] text-white/60">Minutes</p>
+		<p class="tabular-nums font-display leading-none tracking-[0.02em] text-[clamp(1.75rem,7vw,3rem)] md:text-[clamp(2rem,4vw,3.25rem)]" data-unit="Minutes">{minutes}</p>
+	</div>
+	<div class="flex min-w-0 flex-col items-center justify-center rounded-2xl bg-black/40 p-4 text-center shadow-inner overflow-hidden">
+		<p class="text-[0.52rem] sm:text-[0.62rem] md:text-[0.72rem] uppercase tracking-[0.08em] text-white/60">Seconds</p>
+		<p class="tabular-nums font-display leading-none tracking-[0.02em] text-[clamp(1.75rem,7vw,3rem)] md:text-[clamp(2rem,4vw,3.25rem)]" data-unit="Seconds">{seconds}</p>
+	</div>
+</div>
+
+<script is:inline>
+	// Get the container that appears just before this script tag
+	const el = (document.currentScript && document.currentScript.previousElementSibling);
+	if (el) {
+		const target = new Date(el.getAttribute('data-countdown-target') || '');
+
+		const pad = (value) => String(value).padStart(2, '0');
+
+		const update = () => {
+			const now = new Date();
+			const diff = Math.max(0, target.getTime() - now.getTime());
+			const units = {
+				Days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+				Hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+				Minutes: Math.floor((diff / (1000 * 60)) % 60),
+				Seconds: Math.floor((diff / 1000) % 60),
+			};
+
+			for (const [label, value] of Object.entries(units)) {
+				const cell = el.querySelector(`p[data-unit="${label}"]`);
+				if (cell) cell.textContent = pad(value);
+			}
+		};
+
+		update();
+		const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (!reduce) setInterval(update, 1000);
+	}
+</script>

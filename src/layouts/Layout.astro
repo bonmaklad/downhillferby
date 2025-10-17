@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import NavBar from '../components/NavBar.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+	canonical?: string;
+	ogImage?: string;
+	pageClass?: string;
+}
+
+const {
+	title = 'PlumberDan Soap Box Derby 2026',
+	description = 'Fuel your build, rally your crew, and race the Drews Ave Hill this Vintage Weekend. Sign up now for the PlumberDan Soap Box Derby 2026.',
+	canonical = 'https://soapbox.plumberdan.nz',
+	ogImage = '/og-image.jpg',
+	pageClass = '',
+} = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" href="/favicon.svg" />
+		<link rel="canonical" href={canonical} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta name="theme-color" content="rgb(254,254,0)" />
+		<slot name="head" />
+	</head>
+	<body class={`min-h-screen bg-white text-ink overflow-x-hidden ${pageClass}`}>
+		<a class="skip-link" href="#main-content">
+			Skip to main content
+		</a>
+		<header>
+			<NavBar />
+		</header>
+		<main id="main-content">
+			<slot />
+		</main>
+		<footer>
+			<SiteFooter />
+		</footer>
+		<script
+			is:inline
+		>{`try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("reduce-motion")}}catch(e){}`}</script>
+	</body>
+</html>

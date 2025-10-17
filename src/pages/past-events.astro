@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { pastEvents } from '../data/past-events';
+import { Image } from 'astro:assets';
+---
+
+<Layout title="Past Events" description="Throwback galleries from 2017 through 2024 showcasing the PlumberDan Soap Box Derby story.">
+	<section class="section-pad bg-brand-yellow/30">
+		<div class="mx-auto max-w-6xl space-y-6 px-6">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-red">Legacy of speed</p>
+			<h1 class="section-heading">Past events</h1>
+			<p class="max-w-3xl text-lg text-ink/80">
+				Scroll through the highlights from recent years—each chapter keeps the Drews Ave tradition alive.
+			</p>
+			<div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.26em] text-brand-ash/70">
+				{pastEvents.map((event) => (
+					<a href={`#year-${event.year}`} class="rounded-full border border-brand-ash/30 px-4 py-2 transition hover:border-brand-red hover:text-brand-red">
+						{event.year}
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl space-y-14 px-6 py-16">
+			{pastEvents.map((event) => (
+				<article id={`year-${event.year}`} class="space-y-6">
+					<header class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+						<div>
+							<h2 class="text-4xl font-display uppercase tracking-[0.3em] text-brand-ash">{event.year}</h2>
+							<p class="text-sm uppercase tracking-[0.26em] text-brand-red">{event.tagline}</p>
+						</div>
+						<p class="max-w-2xl text-sm text-ink/80">{event.highlight}</p>
+					</header>
+					<div class="grid gap-4 md:grid-cols-3">
+						{event.media.map((media) => (
+							<div class="overflow-hidden rounded-3xl border border-brand-silver/70">
+								{media.video ? (
+									<video controls poster={typeof media.src === 'string' ? media.src : undefined} class="h-60 w-full object-cover">
+										<source src={media.video} />
+									</video>
+								) : typeof media.src === 'string' ? (
+									<img src={media.src} alt={media.alt} loading="lazy" class="h-60 w-full object-cover" />
+								) : (
+									<Image src={media.src} alt={media.alt} loading="lazy" class="h-60 w-full object-cover" />
+								)}
+							</div>
+						))}
+					</div>
+				</article>
+			))}
+		</div>
+	</section>
+</Layout>

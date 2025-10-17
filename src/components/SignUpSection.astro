@@ -1,0 +1,142 @@
+---
+import { categories } from '../data/categories';
+import { signupHighlights } from '../data/home';
+import { eventInfo } from '../data/event';
+
+const stripeLink = import.meta.env.PUBLIC_STRIPE_PAYMENT_LINK || eventInfo.signupUrlPlaceholder;
+const sheetsEndpoint = import.meta.env.PUBLIC_GOOGLE_SHEETS_ENDPOINT || '';
+const formEmbed = import.meta.env.PUBLIC_GOOGLE_FORM_EMBED_URL || '';
+---
+
+<section id="signup" class="section-pad bg-brand-yellow/20">
+	<div class="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[2fr,1fr]">
+		<div>
+			<h2 class="section-heading mb-4">Lock in your grid slot</h2>
+			<p class="mb-8 max-w-2xl text-lg text-ink/80">
+				Complete the form to reserve your racer number and pay the $10 early-bird fee online. Miss it and you’ll pay $50 on race morning if spots remain.
+			</p>
+			<form
+				id="signup-form"
+				class="grid gap-6 rounded-3xl border border-brand-silver/60 bg-white p-6 shadow-xl"
+				data-stripe-link={stripeLink}
+				data-sheets-endpoint={sheetsEndpoint}
+				data-form-embed={formEmbed}
+			>
+				<div class="grid gap-4 sm:grid-cols-2">
+					<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+						Driver name
+						<input type="text" name="name" required placeholder="Full name" class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30" />
+					</label>
+					<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+						Category
+						<select name="category" required class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30">
+							<option value="" disabled selected>Select a category</option>
+							{categories.map((cat) => (
+								<option value={cat.name}>{cat.name}</option>
+							))}
+						</select>
+					</label>
+					<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+						Age
+						<input type="number" name="age" min="5" max="99" required placeholder="Your age" class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30" />
+					</label>
+					<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+						Phone number
+						<input type="tel" name="phone" required inputmode="tel" placeholder="Mobile" class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30" />
+					</label>
+				</div>
+				<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+					Email
+					<input type="email" name="email" required placeholder="Email for confirmations" class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30" />
+				</label>
+				<label class="flex flex-col gap-2 text-sm font-semibold uppercase tracking-[0.26em]">
+					Team / crew notes (optional)
+					<textarea name="notes" rows="3" placeholder="Who’s on your pit crew? Sponsors?" class="rounded-xl border border-brand-silver/60 px-4 py-3 text-base font-normal uppercase tracking-normal text-ink focus:border-brand-red focus:outline-none focus:ring-2 focus:ring-brand-red/30"></textarea>
+				</label>
+				<label class="flex items-start gap-3 text-xs uppercase tracking-[0.18em] text-ink/80">
+					<input type="checkbox" name="agree" required class="mt-1 h-4 w-4 rounded border-brand-silver/70 text-brand-red focus:ring-brand-red/40" />
+					<span>I understand helmets, closed shoes, brakes, and scrutineering compliance are mandatory.</span>
+				</label>
+				<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<button type="submit" class="glow-ring rounded-full bg-brand-red px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-ink transition hover:translate-y-[-2px]">Submit &amp; Pay</button>
+					<p class="text-xs uppercase tracking-[0.24em] text-ink/60">$10 online · $50 on the day</p>
+				</div>
+				<p class="hidden mt-2 text-sm font-semibold" id="signup-message" role="status"></p>
+			</form>
+		</div>
+		<div class="space-y-6">
+			<div class="rounded-3xl bg-white p-6 shadow-lg">
+				<h3 class="mb-3 text-sm font-semibold uppercase tracking-[0.32em] text-brand-red">Race Day Essentials</h3>
+				<ul class="space-y-4 text-sm text-ink/80">
+					{signupHighlights.map((item) => (
+						<li class="rounded-2xl border border-brand-silver/60 p-4">
+							<p class="font-semibold uppercase tracking-[0.24em] text-brand-ash">{item.title}</p>
+							<p class="mt-2 leading-relaxed text-ink/80">{item.copy}</p>
+						</li>
+					))}
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<script is:inline>
+	const form = document.getElementById('signup-form');
+	if (form) {
+		const message = document.getElementById('signup-message');
+		const stripeLink = form.dataset.stripeLink;
+		const sheetsEndpoint = form.dataset.sheetsEndpoint;
+		const formEmbed = form.dataset.formEmbed;
+
+		const setMessage = (text, variant = 'info') => {
+			if (!message) return;
+			message.textContent = text;
+			message.classList.remove('hidden', 'text-brand-red', 'text-brand-ash');
+			message.classList.add(variant === 'error' ? 'text-brand-red' : 'text-brand-ash');
+		};
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (!message) return;
+
+			setMessage('Sending registration…');
+
+			const formData = new FormData(form);
+			const payload = Object.fromEntries(formData.entries());
+			payload.timestamp = new Date().toISOString();
+			payload.agree = formData.get('agree') === 'on';
+
+			try {
+				if (sheetsEndpoint) {
+					const response = await fetch(sheetsEndpoint, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload),
+					});
+
+					if (!response.ok) {
+						throw new Error(`Sheets endpoint error: ${response.status}`);
+					}
+				}
+
+				setMessage('Registration received! Redirecting you to payment…', 'info');
+
+				setTimeout(() => {
+					if (stripeLink && stripeLink !== 'https://buy.stripe.com/your-live-payment-link') {
+						window.location.href = stripeLink;
+					} else if (formEmbed) {
+						window.open(formEmbed, '_blank');
+					}
+				}, 800);
+				form.reset();
+			} catch (error) {
+				console.error(error);
+				setMessage('Could not submit automatically. Please email michael@necta.nz or use the Google form link.', 'error');
+				if (formEmbed) {
+					setTimeout(() => window.open(formEmbed, '_blank'), 1200);
+				}
+			}
+		});
+	}
+</script>

@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { eventInfo } from '../data/event';
+import { safetyPillars, scrutineeringChecklist, emergencyContacts, spectatorSafety } from '../data/health';
+---
+
+<Layout title="Health & Safety" description="Safety planning, medical readiness, and course management for the PlumberDan Soap Box Derby.">
+	<section class="section-pad bg-brand-red text-white">
+		<div class="mx-auto max-w-5xl space-y-6 px-6">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-yellow">Safety first</p>
+			<h1 class="section-heading text-white">Race day protection plan</h1>
+			<p class="max-w-3xl text-lg text-black/80">
+				We design the derby for thrills, not spills. Review these procedures so your crew, spectators, and marshals stay safe throughout {eventInfo.date}.
+			</p>
+		</div>
+	</section>
+	<section class="section-pad bg-white">
+		<div class="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-[1fr,1.1fr]">
+			<div class="space-y-6">
+				{ safetyPillars.map((pillar) => (
+					<article class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+						<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">{pillar.title}</h2>
+						<p class="mt-3 text-sm leading-relaxed text-ink/80">{pillar.detail}</p>
+					</article>
+				)) }
+			</div>
+			<div class="space-y-8">
+				<div class="rounded-3xl border border-brand-silver/70 bg-brand-yellow/30 p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Scrutineering checklist</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{ scrutineeringChecklist.map((item) => (
+							<li class="flex items-start gap-3">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{item}</span>
+							</li>
+						)) }
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Emergency contacts</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{ emergencyContacts.map((contact) => (
+							<li>
+								<strong>{contact.label}:</strong> {contact.value}
+							</li>
+						)) }
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Spectator safety</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{ spectatorSafety.map((tip) => (
+							<li class="flex items-start gap-3">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{tip}</span>
+							</li>
+						)) }
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

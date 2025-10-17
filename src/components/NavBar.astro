@@ -1,0 +1,47 @@
+---
+const navLinks = [
+	{ href: '/past-events', label: 'Past Events' },
+	{ href: '/build-a-soapbox', label: 'Build Guide' },
+	{ href: '/spectators', label: 'Spectators' },
+	{ href: '/contact', label: 'Contact' },
+];
+---
+
+<nav class="sticky top-0 z-40 backdrop-blur bg-white/85 border-b border-brand-silver/40">
+	<div class="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
+		<a class="flex items-center gap-3 font-display text-3xl uppercase tracking-[0.28em] text-ink" href="/">
+			<span class="relative inline-grid place-items-center h-12 w-12 rounded-full bg-brand-yellow text-ink font-semibold shadow-neon shadow-brand-red/40">
+				
+			</span>
+			<span class="hidden sm:inline-block">Soap Box Derby</span>
+		</a>
+		<ul class="hidden gap-6 text-sm font-semibold uppercase text-ink/80 lg:flex">
+			{navLinks.map((link) => (
+				<li>
+					<a class="transition hover:text-brand-red focus-visible:outline-none focus-visible:text-brand-red" href={link.href}>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+		<div class="flex items-center gap-3">
+			<a
+				class="hidden rounded-full border border-brand-red px-5 py-2 text-sm font-semibold uppercase tracking-widest text-brand-red transition hover:bg-brand-red hover:text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-red/30 sm:inline-block"
+				href="/#signup"
+			>
+				Sign Up
+			</a>
+			<a
+				class="flex h-12 w-12 items-center justify-center rounded-full border border-brand-ash/30 text-brand-ash transition hover:border-brand-red hover:text-brand-red focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-red/20 lg:hidden"
+				href="/contact"
+				aria-label="Contact"
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+					<path
+						d="M3 5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25v13.5A2.25 2.25 0 0 1 18.75 21H5.25A2.25 2.25 0 0 1 3 18.75V5.25Zm3.53 1.47a.75.75 0 0 0-1.06 1.06l6 6a.75.75 0 0 0 1.06 0l6-6a.75.75 0 0 0-1.06-1.06L12 12.44 6.53 6.72Z"
+					/>
+				</svg>
+			</a>
+		</div>
+	</div>
+</nav>

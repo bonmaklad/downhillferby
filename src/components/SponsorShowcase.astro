@@ -1,0 +1,54 @@
+---
+import { sponsorTiers } from '../data/sponsors';
+---
+
+<section class="section-pad bg-brand-yellow/40">
+	<div class="mx-auto max-w-6xl space-y-10 px-6">
+		<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+			<div class="space-y-4">
+				<p class="text-xs uppercase tracking-[0.34em] text-brand-red">Partner with the derby</p>
+				<h2 class="section-heading">Gold &amp; Silver spots available</h2>
+				<p class="max-w-3xl text-lg text-ink/80">
+					Sponsor packages amplify your brand across Vintage Weekend. Lock in now to secure track signage, shout-outs, and VIP pit access.
+				</p>
+			</div>
+			<a href="mailto:michael@necta.nz?subject=Soapbox%20Sponsorship" class="inline-flex items-center justify-center rounded-full bg-brand-red px-6 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-black transition hover:shadow-neon">
+				Request sponsor pack
+			</a>
+		</div>
+		<div class="grid gap-6 lg:grid-cols-2">
+			{sponsorTiers.map((tier) => (
+				<div class="rounded-3xl border border-brand-ash/20 bg-white p-6 shadow-lg">
+					<div class="flex items-center justify-between">
+						<h3 class="text-2xl font-display uppercase tracking-[0.3em] text-brand-ash">{tier.name}</h3>
+						<span class="rounded-full bg-brand-red px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white">
+							{tier.maxSpots} spots
+						</span>
+					</div>
+					<ul class="mt-4 space-y-2 text-sm text-ink/80">
+						{tier.perks.map((perk) => (
+							<li class="flex items-start gap-2">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{perk}</span>
+							</li>
+						))}
+					</ul>
+					<div class="mt-6 grid gap-2 text-sm uppercase tracking-[0.28em] text-brand-ash/70">
+						{tier.slots.map((slot) => (
+							<div class="flex items-center justify-between rounded-2xl border border-dashed border-brand-silver/80 px-4 py-3">
+								<span>{slot.name}</span>
+								{slot.isPlaceholder ? (
+									<span class="text-xs text-brand-red">Available</span>
+								) : (
+									<a class="text-xs text-brand-red" href={slot.url} target="_blank" rel="noreferrer noopener">
+										Visit site
+									</a>
+								)}
+							</div>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

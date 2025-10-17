@@ -1,0 +1,29 @@
+---
+import { eventInfo } from '../data/event';
+---
+
+<section class="section-pad bg-brand-ash text-white">
+	<div class="mx-auto max-w-6xl space-y-10 px-6">
+		<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+			<div class="space-y-4">
+				<p class="text-xs uppercase tracking-[0.34em] text-brand-yellow">What you could win</p>
+				<h2 class="section-heading text-white">Trophies + bragging rights</h2>
+				<p class="max-w-2xl text-lg text-black/80">
+					Celebrate style, resilience, and raw speed. Our judging crew combines timing splits with spectator votes and safety compliance.
+				</p>
+			</div>
+			<a href="/past-events" class="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-black transition hover:border-brand-yellow hover:text-brand-yellow">
+				See past champions
+			</a>
+		</div>
+		<div class="grid gap-6 md:grid-cols-3">
+			{eventInfo.prizes.map((prize) => (
+				<div class="relative overflow-hidden rounded-3xl border border-white/20 bg-black p-6 text-white shadow-lg transition hover:border-brand-yellow/60">
+					<p class="text-5xl">{prize.icon}</p>
+					<h3 class="mt-4 text-2xl font-display uppercase tracking-[0.3em] text-brand-yellow">{prize.name}</h3>
+					<p class="mt-4 text-base text-white/80">{prize.description}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

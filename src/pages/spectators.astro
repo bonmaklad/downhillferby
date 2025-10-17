@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { spectatorSchedule, amenities, transportTips, familyFriendly } from '../data/spectators-page';
+---
+
+<Layout title="Spectator Guide" description="Know where to park, watch, and snack while the PlumberDan Soap Box Derby takes over Drews Ave.">
+	<section class="section-pad bg-brand-yellow/40">
+		<div class="mx-auto max-w-5xl space-y-6 px-6">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-red">Free to watch</p>
+			<h1 class="section-heading">Spectator guide</h1>
+			<p class="max-w-3xl text-lg text-ink/80">
+				Grab your crew, a picnic rug, and cheer from the hill. Everything you need for a full day out is right here.
+			</p>
+		</div>
+	</section>
+	<section class="section-pad bg-white">
+		<div class="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1fr,1fr]">
+			<div class="space-y-6">
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Key times</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{spectatorSchedule.map((item) => (
+							<li>
+								<strong>{item.time}</strong> — {item.activity}
+							</li>
+						))}
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Amenities</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{amenities.map((item) => (
+							<li class="flex items-start gap-3">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+			<div class="space-y-6">
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Getting there</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{transportTips.map((tip) => (
+							<li class="flex items-start gap-3">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{tip}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-brand-yellow/30 p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Family friendly</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{familyFriendly.map((note) => (
+							<li class="flex items-start gap-3">
+								<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+								<span>{note}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

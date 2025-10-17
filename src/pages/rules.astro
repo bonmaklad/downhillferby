@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { eventInfo } from '../data/event';
+import { ruleSections, downloads } from '../data/rules';
+---
+
+<Layout title="Soap Box Derby Rules" description="Competition rules, scrutineering requirements, and race-day expectations for the PlumberDan Soap Box Derby.">
+	<section class="section-pad bg-brand-ash text-white">
+		<div class="mx-auto max-w-5xl space-y-6 px-6">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-yellow">Know before you roll</p>
+			<h1 class="section-heading text-white">2026 rulebook</h1>
+			<p class="max-w-3xl text-lg text-black/80">
+				These guidelines keep the derby safe, fair, and fast. Share them with every driver and pit crew member before race weekend.
+			</p>
+			<div class="rounded-3xl border border-white/15 bg-black/10 p-6">
+				<p class="text-sm uppercase tracking-[0.28em] text-black">Race day snapshot</p>
+				<p class="mt-3 text-base text-black/80">{eventInfo.date} · Drews Ave Hill · Competitor briefing 8:45 AM · Racing from 9:00 AM.</p>
+			</div>
+		</div>
+	</section>
+	<section class="section-pad bg-white">
+		<div class="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-[1fr,1.1fr]">
+			<div class="space-y-8">
+				{ruleSections.map((section) => (
+					<article class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+						<h2 class="text-2xl font-display uppercase tracking-[0.28em] text-brand-ash">{section.title}</h2>
+						<ul class="mt-4 space-y-3 text-sm leading-relaxed text-ink/80">
+							{section.points.map((point) => (
+								<li class="flex items-start gap-3">
+									<span class="mt-1 h-2 w-2 rounded-full bg-brand-red"></span>
+									<span>{point}</span>
+								</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+			<div class="space-y-8">
+				<div class="rounded-3xl border border-brand-silver/60 bg-brand-yellow/30 p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Downloads</h2>
+					<p class="mt-2 text-sm text-ink/80">
+						Printable resources will be released as soon as the 2026 pack is finalised.
+					</p>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						{downloads.map((file) => (
+							<li class="rounded-2xl border border-brand-silver/70 bg-white p-4">
+								<a href={file.href} class="font-semibold uppercase tracking-[0.26em] text-brand-red">
+									{file.label}
+								</a>
+								<p class="mt-2 text-xs uppercase tracking-[0.22em] text-brand-ash/70">{file.note}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Race morning timeline</h2>
+					<ul class="mt-4 space-y-3 text-sm text-ink/80">
+						<li><strong>7:30 AM</strong> — Pit access opens (Pukenamu Queens Park).</li>
+						<li><strong>7:45 AM</strong> — Scrutineering teams circulate; have kart and gear ready.</li>
+						<li><strong>8:00 AM</strong> — Staff &amp; volunteer briefing at the Admin Tent.</li>
+						<li><strong>8:45 AM</strong> — Mandatory competitors briefing (all divisions).</li>
+						<li><strong>9:00 AM</strong> — Racing begins. Late arrivals may forfeit their first heat.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

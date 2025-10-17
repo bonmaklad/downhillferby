@@ -1,0 +1,39 @@
+---
+import { categories } from '../data/categories';
+import { eventInfo } from '../data/event';
+---
+
+<div class="overflow-hidden bg-brand-red text-ink">
+	<div class="animate-marquee whitespace-nowrap py-3 text-sm uppercase tracking-[0.4em]">
+		{Array.from({ length: 4 }).map(() => (
+			<span class="mx-8">
+				{eventInfo.date} · {categories.map((cat) => cat.name).join(' • ')} · Free for spectators · Coffee · Food · Entertainment
+			</span>
+		))}
+	</div>
+</div>
+
+<style>
+	@keyframes marquee {
+		0% {
+			transform: translateX(0%);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	.animate-marquee {
+		animation: marquee 18s linear infinite;
+	}
+
+	.reduce-motion .animate-marquee {
+		animation: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.animate-marquee {
+			animation: none;
+		}
+	}
+</style>

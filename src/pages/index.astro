@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { eventInfo } from '../data/event';
+
+import HeroSection from '../components/HeroSection.astro';
+import MarqueeStrip from '../components/MarqueeStrip.astro';
+import SignUpSection from '../components/SignUpSection.astro';
+import CategoriesSection from '../components/CategoriesSection.astro';
+import ScheduleSection from '../components/ScheduleSection.astro';
+import PrizesSection from '../components/PrizesSection.astro';
+import SponsorShowcase from '../components/SponsorShowcase.astro';
+import VideoStrip from '../components/VideoStrip.astro';
+import BuildGuideTeaser from '../components/BuildGuideTeaser.astro';
+import SpectatorStrip from '../components/SpectatorStrip.astro';
+import PastEventsTeaser from '../components/PastEventsTeaser.astro';
+import FAQSection from '../components/FAQSection.astro';
+import StickySignupBar from '../components/StickySignupBar.astro';
+
+const eventSchema = {
+	"@context": 'https://schema.org',
+	"@type": 'Event',
+	name: eventInfo.name,
+	startDate: eventInfo.countdownAnchor,
+	endDate: eventInfo.countdownAnchor,
+	eventStatus: 'https://schema.org/EventScheduled',
+	eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+	description: eventInfo.description,
+	location: {
+		"@type": 'Place',
+		name: eventInfo.location,
+		address: eventInfo.address,
+	},
+	organizer: {
+		"@type": 'Organization',
+		name: 'PlumberDan Soap Box Derby',
+		url: 'https://soapbox.plumberdan.nz',
+	},
+};
+---
+
+<Layout title="PlumberDan Soap Box Derby 2026 — Sign up now" description={eventInfo.description}>
+	<Fragment slot="head">
+		<script type="application/ld+json">{JSON.stringify(eventSchema)}</script>
+	</Fragment>
+	<HeroSection />
+	<MarqueeStrip />
+	<SignUpSection />
+	<CategoriesSection />
+	<ScheduleSection />
+	<PrizesSection />
+	<SponsorShowcase />
+	<VideoStrip />
+	<BuildGuideTeaser />
+	<SpectatorStrip />
+	<PastEventsTeaser />
+	<FAQSection />
+	<StickySignupBar />
+</Layout>

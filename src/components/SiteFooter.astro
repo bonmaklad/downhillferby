@@ -1,0 +1,43 @@
+---
+const quickLinks = [
+	{ label: 'Rules', href: '/rules' },
+	{ label: 'Health & Safety', href: '/health-safety' },
+	{ label: 'Spectators', href: '/spectators' },
+	{ label: 'Past Events', href: '/past-events' },
+];
+
+const contactLinks = [
+	{ label: 'Email Michael', href: 'mailto:michael@necta.nz?subject=Soapbox%20enquiry' },
+	{ label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100069807660781', external: true },
+];
+
+const footerLinks = [...quickLinks, ...contactLinks];
+---
+
+<div class="bg-ink text-black">
+	<div class="mx-auto w-full max-w-6xl px-6 py-16 space-y-8">
+		<div class="space-y-6">
+			<p class="font-display text-4xl uppercase tracking-[0.32em]">PlumberDan</p>
+			<p class="max-w-xl text-sm text-black/80">
+				The PlumberDan Soap Box Derby powers Vintage Weekend with home-built racers, gutsy turns, and gravity-fed speed. Monday 20 January 2026 – Drews Ave Hill, Whanganui.
+			</p>
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-yellow">Free for spectators • Registration now open</p>
+		</div>
+
+		<nav aria-label="Footer" class="flex flex-wrap gap-2 sm:gap-3">
+			{footerLinks.map((link) => (
+				<a
+					class="inline-flex items-center justify-center rounded-full border border-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-black transition hover:border-brand-yellow hover:text-brand-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow/40"
+					href={link.href}
+					target={link.external ? '_blank' : undefined}
+					rel={link.external ? 'noreferrer noopener' : undefined}
+				>
+					{link.label}
+				</a>
+			))}
+		</nav>
+	</div>
+	<div class="border-t border-white/10 bg-black/40 py-6 text-center text-xs uppercase tracking-[0.34em] text-white/60">
+		© {new Date().getFullYear()} PlumberDan Soap Box Derby
+	</div>
+</div>

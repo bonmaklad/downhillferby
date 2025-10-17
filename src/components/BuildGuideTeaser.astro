@@ -1,0 +1,26 @@
+---
+import { buildChecklist } from '../data/home';
+---
+
+<section class="section-pad bg-brand-yellow/30">
+	<div class="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.1fr,1fr]">
+		<div class="space-y-4">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-red">Build smarter</p>
+			<h2 class="section-heading">Tune it for Whanganui</h2>
+			<p class="text-lg text-ink/80">
+				The Drews Ave course isn’t straight. You’ll need legitimate steering, confident brakes, and a kart that can recover after the chicane.
+			</p>
+			<a href="/build-a-soapbox" class="inline-flex items-center justify-center rounded-full border border-brand-red px-6 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-brand-red transition hover:bg-brand-red hover:text-primary">
+				Read the full build guide
+			</a>
+		</div>
+		<div class="space-y-4">
+			{buildChecklist.map((item) => (
+				<div class="rounded-3xl border border-brand-silver/60 bg-white p-5 shadow-md">
+					<h3 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">{item.title}</h3>
+					<p class="mt-2 text-sm text-ink/80">{item.body}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

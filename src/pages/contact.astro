@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { contacts, officeHours } from '../data/contact';
+---
+
+<Layout title="Contact the Derby Team" description="Reach the PlumberDan Soap Box Derby organisers for media, sponsorship, or registration questions.">
+	<Fragment slot="head">
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+			integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+			crossorigin=""
+		/>
+	</Fragment>
+	<section class="section-pad bg-brand-red text-black">
+		<div class="mx-auto max-w-5xl space-y-6 px-6">
+			<p class="text-xs uppercase tracking-[0.34em] text-brand-yellow">Talk to us</p>
+			<h1 class="section-heading text-white">Contact</h1>
+			<p class="max-w-3xl text-lg text-black/80">
+				We’re here to help with registrations, sponsorships, media coverage, and volunteer opportunities.
+			</p>
+			<a href="mailto:michael@necta.nz?subject=Soapbox%20enquiry" class="inline-flex items-center justify-center rounded-full bg-brand-yellow px-8 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-ink transition hover:shadow-neon">
+				Email michael@necta.nz
+			</a>
+		</div>
+	</section>
+	<section class="section-pad bg-white">
+		<div class="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-[1fr,1fr]">
+			<div class="space-y-6">
+				{contacts.map((contact) => (
+					<article class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+						<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">{contact.title}</h2>
+						<p class="mt-2 text-sm uppercase tracking-[0.24em] text-brand-red">{contact.person}</p>
+						<p class="mt-1 text-xs uppercase tracking-[0.22em] text-brand-ash/70">{contact.role}</p>
+						<p class="mt-3 text-sm text-ink/80">
+							<a href={`mailto:${contact.email}`} class="text-brand-red">{contact.email}</a><br />
+							<a href={`tel:${contact.phone.replace(/\s+/g, '')}`} class="text-brand-ash">{contact.phone}</a>
+						</p>
+					</article>
+				))}
+			</div>
+			<div class="space-y-6">
+				<div class="rounded-3xl border border-brand-silver/70 bg-brand-yellow/30 p-6">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Office hours</h2>
+					<ul class="mt-3 space-y-2 text-sm text-ink/80">
+						{officeHours.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</div>
+				<div class="rounded-3xl border border-brand-silver/70 bg-white p-6 shadow-sm">
+					<h2 class="text-xl font-display uppercase tracking-[0.28em] text-brand-ash">Race location</h2>
+					<p class="mt-2 text-sm text-ink/80">Drews Avenue, Whanganui · Pit entry via Pukenamu Queens Park (Cameron Terrace).</p>
+					<div id="race-map" class="mt-4 h-[32rem] w-full overflow-hidden rounded-2xl border border-brand-silver/60"></div>
+					<iframe
+						id="race-map-fallback"
+						class="mt-4 hidden h-[32rem] w-full rounded-2xl border border-brand-silver/60"
+						src="https://www.google.com/maps?hl=en&q=-39.9309,175.0509&z=19&output=embed&maptype=roadmap"
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+					></iframe>
+					<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+					<script is:inline>
+						(function(){
+							const init = () => {
+								try {
+									if (!window.L) throw new Error('Leaflet not loaded');
+									const racers = [-39.932152, 175.054654];
+									const spectators = [-39.932680, 175.054099];
+									const map = L.map('race-map', { zoomControl: true, scrollWheelZoom: false });
+									const bounds = L.latLngBounds([racers, spectators]).pad(0.3);
+									map.fitBounds(bounds, { maxZoom: 19, animate: false });
+
+									L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+										attribution: '&copy; OpenStreetMap contributors'
+									}).addTo(map);
+
+									L.marker(racers).addTo(map)
+										.bindTooltip('Racers — Pukenamu Dr (Pit Entry)', { permanent: true, direction: 'top', className: 'map-label' })
+										.openTooltip();
+
+									L.marker(spectators).addTo(map)
+										.bindTooltip('Spectators — Drews Ave', { permanent: true, direction: 'top', className: 'map-label' })
+										.openTooltip();
+
+									// hide fallback if map initialised
+									document.getElementById('race-map-fallback')?.classList.add('hidden');
+								} catch (e) {
+									// show fallback iframe
+									document.getElementById('race-map')?.classList.add('hidden');
+									document.getElementById('race-map-fallback')?.classList.remove('hidden');
+								}
+							};
+							if (document.readyState === 'complete' || document.readyState === 'interactive') init();
+							else window.addEventListener('DOMContentLoaded', init, { once: true });
+						})();
+					</script>
+					<style>
+						:global(.map-label){
+							background: #121212; color:#fff; border:1px solid rgba(255,255,255,.25);
+							border-radius:9999px; padding:4px 10px; text-transform:uppercase; letter-spacing:.06em; font-size:12px;
+							box-shadow:0 6px 16px rgba(0,0,0,.15);
+						}
+					</style>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>

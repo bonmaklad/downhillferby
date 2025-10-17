@@ -1,0 +1,121 @@
+---
+import CountdownTimer from './CountdownTimer.astro';
+import { eventInfo } from '../data/event';
+import { eventStats } from '../data/home';
+import { heroVideo } from '../data/media';
+---
+
+<section class="relative isolate overflow-hidden bg-black text-white">
+	<div class="absolute inset-0">
+		<video
+			id="hero-video"
+			preload="metadata"
+			muted
+			loop
+			playsinline
+			poster={heroVideo.poster}
+			class="h-full w-full object-cover"
+		>
+			<source src={heroVideo.src} type="video/mp4" />
+		</video>
+		<div id="hero-overlay" class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/50 to-brand-red/30 opacity-0 transition-opacity duration-700"></div>
+	</div>
+	<div id="hero-content" class="relative mx-auto flex min-h-[90vh] max-w-6xl flex-col justify-between gap-16 px-6 py-20 opacity-0 translate-y-2 pointer-events-none transition duration-700 ease-out lg:py-28">
+		<div class="flex flex-col gap-10 lg:flex-row lg:items-end">
+			<div class="max-w-3xl space-y-6">
+				<p class="text-xs uppercase tracking-[0.38em] text-brand-yellow">Vintage Weekend Feature Event</p>
+				<h1 class="text-5xl font-display uppercase leading-none tracking-[0.32em] sm:text-6xl lg:text-7xl">
+					PlumberDan Soap Box Derby 2026
+				</h1>
+				<p class="max-w-2xl text-lg text-white/80">{eventInfo.description}</p>
+				<div class="flex flex-wrap gap-4">
+					<a
+						href="#signup"
+						class="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+					>
+						Sign Up Now
+					</a>
+					<a
+						href="/rules"
+						class="rounded-full bg-brand-yellow px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-ink transition hover:shadow-neon"
+					>
+						Read the Rules
+					</a>
+				</div>
+			</div>
+			<div class="w-full max-w-sm rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
+				<h2 class="text-sm uppercase tracking-[0.34em] text-brand-yellow">Countdown to Launch</h2>
+				<p class="mb-6 mt-2 text-sm text-white/70">{eventInfo.date} · {eventInfo.time}</p>
+				<CountdownTimer target={eventInfo.countdownAnchor} />
+				<p class="mt-4 text-xs uppercase tracking-[0.32em] text-white/60">
+					{eventInfo.location}
+				</p>
+			</div>
+		</div>
+		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			{eventStats.map((stat) => (
+				<div class="rounded-3xl bg-white/10 p-6 backdrop-blur transition hover:bg-white/20">
+					<p class="text-sm uppercase tracking-[0.32em] text-brand-yellow">{stat.label}</p>
+					<p class="mt-4 font-display text-4xl tracking-[0.32em]">{stat.value}</p>
+					<p class="mt-2 text-sm text-white/70">{stat.hint}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<script is:inline>
+	const video = document.getElementById('hero-video');
+	const content = document.getElementById('hero-content');
+	const overlay = document.getElementById('hero-overlay');
+	if (video && content) {
+		// Start the background video 3 seconds in without flashing the first frame
+		const SEEK_OFFSET = 13; // seconds
+		video.autoplay = false; // prevent immediate play at 0s
+		const setStartTime = () => {
+			try {
+				const maxSeek = Math.max(0, (isFinite(video.duration) ? video.duration : SEEK_OFFSET + 0.1) - 0.1);
+				video.currentTime = Math.min(SEEK_OFFSET, maxSeek);
+			} catch {}
+		};
+		const handleLoaded = () => {
+			setStartTime();
+			const onSeeked = () => {
+				video.removeEventListener('seeked', onSeeked);
+				video.play().catch(() => {});
+			};
+			if (Math.abs(video.currentTime - SEEK_OFFSET) < 0.25) {
+				video.play().catch(() => {});
+			} else {
+				video.addEventListener('seeked', onSeeked);
+			}
+		};
+		if (video.readyState >= 1) {
+			handleLoaded();
+		} else {
+			video.addEventListener('loadedmetadata', handleLoaded, { once: true });
+		}
+
+		const reveal = () => {
+			if (content.dataset.revealed === 'true') return;
+			content.dataset.revealed = 'true';
+			setTimeout(() => {
+				// Show content
+				content.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+				content.classList.add('opacity-100', 'translate-y-0');
+				// Fade overlay back in
+				if (overlay) {
+					overlay.classList.remove('opacity-0');
+					overlay.classList.add('opacity-100');
+				}
+			}, 2000);
+		};
+
+		// If already playing (autoplay), reveal based on current state; otherwise wait for event
+		if (!video.paused && video.readyState >= 2) {
+			reveal();
+		} else {
+			video.addEventListener('playing', reveal, { once: true });
+		}
+	}
+</script>

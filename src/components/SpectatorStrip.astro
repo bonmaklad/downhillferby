@@ -1,0 +1,31 @@
+---
+import { spectatorPerks } from '../data/home';
+---
+
+<section class="section-pad bg-white">
+	<div class="mx-auto max-w-6xl space-y-8 px-6">
+		<div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+			<div>
+				<p class="text-xs uppercase tracking-[0.34em] text-brand-red">Free for spectators</p>
+				<h2 class="section-heading">Hilltop festival vibes</h2>
+			</div>
+			<p class="max-w-2xl text-lg text-ink/80">
+				Bring the whānau, claim a haybale and soak up Vintage Weekend. Food, music, and retro fun all day long.
+			</p>
+		</div>
+		<div class="grid gap-6 md:grid-cols-3">
+			{spectatorPerks.map((perk) => (
+				<div class="rounded-3xl border border-brand-silver/70 bg-brand-yellow/40 p-6 shadow-md">
+					<h3 class="text-xl font-display uppercase tracking-[0.3em] text-brand-ash">{perk.title}</h3>
+					<p class="mt-4 text-base text-ink/80">{perk.detail}</p>
+				</div>
+			))}
+		</div>
+		<div class="rounded-3xl border border-brand-silver/60 bg-brand-yellow/70 p-6 text-sm text-ink/80">
+			<p class="uppercase tracking-[0.28em] text-brand-red">Accessibility</p>
+			<p class="mt-3">
+				Accessible viewing is signposted near the top of Drews Ave with mobility parking off Taupō Quay. Volunteers are on hand to assist with seating and shade.
+			</p>
+		</div>
+	</div>
+</section>
