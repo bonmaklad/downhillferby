@@ -23,7 +23,12 @@ import { categories } from '../data/categories';
 					<h3 class="text-3xl font-display uppercase tracking-[0.3em] text-brand-ash">{category.name}</h3>
 					<p class="mt-2 text-sm uppercase tracking-[0.26em] text-brand-red">{category.ageRange}</p>
 					<p class="mt-4 text-base leading-relaxed text-ink/80">{category.description}</p>
-					<div class="mt-6 flex gap-4 text-sm uppercase tracking-[0.28em] text-brand-ash/80">
+					<!-- Mobile: single CTA linking to signup -->
+					<a href="/#signup" class="mt-6 inline-flex items-center justify-center rounded-full bg-brand-yellow px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-ink transition hover:shadow-neon sm:hidden">
+						${category.fee.early} Pre-reg
+					</a>
+					<!-- Desktop: show both price pills -->
+					<div class="mt-6 hidden gap-4 text-sm uppercase tracking-[0.28em] text-brand-ash/80 sm:flex">
 						<span class="rounded-full bg-brand-yellow/80 px-4 py-2 text-ink">${category.fee.early} pre-reg</span>
 						<span class="rounded-full border border-brand-ash/20 px-4 py-2">${category.fee.eventDay} race day</span>
 					</div>

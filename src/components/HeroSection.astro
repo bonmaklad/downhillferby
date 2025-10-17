@@ -24,7 +24,7 @@ import { heroVideo } from '../data/media';
 		<div class="flex flex-col gap-10 lg:flex-row lg:items-end">
 			<div class="max-w-3xl space-y-6">
 				<p class="text-xs uppercase tracking-[0.38em] text-brand-yellow">Vintage Weekend Feature Event</p>
-				<h1 class="text-5xl font-display uppercase leading-none tracking-[0.32em] sm:text-6xl lg:text-7xl">
+				<h1 class="font-display uppercase leading-tight break-words tracking-[0.10em] text-[clamp(1.4rem,6.5vw,2.2rem)] sm:text-5xl sm:tracking-[0.22em] lg:text-7xl lg:tracking-[0.32em]">
 					PlumberDan Soap Box Derby 2026
 				</h1>
 				<p class="max-w-2xl text-lg text-white/80">{eventInfo.description}</p>
@@ -37,7 +37,7 @@ import { heroVideo } from '../data/media';
 					</a>
 					<a
 						href="/rules"
-						class="rounded-full bg-brand-yellow px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-ink transition hover:shadow-neon"
+						class="hidden sm:inline-block rounded-full bg-brand-yellow px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-ink transition hover:shadow-neon"
 					>
 						Read the Rules
 					</a>
@@ -99,6 +99,8 @@ import { heroVideo } from '../data/media';
 		const reveal = () => {
 			if (content.dataset.revealed === 'true') return;
 			content.dataset.revealed = 'true';
+			const isMobile = window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
+			const delay = isMobile ? 0 : 2000;
 			setTimeout(() => {
 				// Show content
 				content.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
@@ -108,7 +110,7 @@ import { heroVideo } from '../data/media';
 					overlay.classList.remove('opacity-0');
 					overlay.classList.add('opacity-100');
 				}
-			}, 2000);
+			}, delay);
 		};
 
 		// If already playing (autoplay), reveal based on current state; otherwise wait for event
